@@ -28,9 +28,12 @@
 ' 2021-03-02-Tue : 코딩 시작
                    코딩한 부분 주석 처리
                    입력을 [1, 2, 3, 2, 3]으로 했을 때 [4, 3, 2, 1, 0]으로 출력되는 오류 (세 번째 원소 오답) -> 보완 필요
-                   오류 수정
+                   테스트 케이스 [1, 2, 3, 2, 3오류 수정
                    헤더파일 <stdbool.h>, <stdlib.h> 추가
                    [1, 2, 3, 2, 3] 입력시 [4, 3, 2, 1, 0]으로, [1, 2, 3, 2, 3, 1] 입력시 [5, 4, 1, 2, 0, 0]으로 출력되는 오류 -> 보완 필요
+                   테스트 케이스 [1, 2, 3, 2, 3, 1]오류 수정
+                   테스트 케이스 [1, 3] 오류 수정 (결과 [1, 0])
+                   main 함수와 result 함수로 분리
 =======================================================================================================================================
 */
 
@@ -38,13 +41,53 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+// prices_len은 배열 prices의 길이입니다.
+int *solution(int prices[], size_t prices_len)
+{
+    // return 값은 malloc 등 동적 할당을 사용해주세요. 할당 길이는 상황에 맞게 변경해주세요.
+    int *answer = (int *)malloc(sizeof(int) * prices_len * 10);
+    int count = 0; // 주식 가격이 떨어지지 않는 시간을 count
+
+    // 주식 가격 크기 비교
+    for (int i = 0; i < prices_len; i++) // 현재 원소의 크기와
+    {
+        count = 0;
+        if (i == prices_len - 1)
+        {
+            answer[i] = 0;
+            break;
+        }
+
+        for (int j = i + 1; j < prices_len; j++) // 다음 원소의 크기 비교
+        {
+            if (prices[i] <= prices[j]) // 현재 원소의 크기가 다음 원소의 크기보다 작거나 같으면
+            {
+                count++; // 가격이 떨어지지 않아 숫자 count
+            }
+
+            else
+            {
+                count++; // 가격이 떨어져도 시간은 지났기 때문에 count
+                break; // 가격이 떨어졌기 때문에 다음 원소(i) 비교하기 위해 for문 나감
+            }
+        }
+        answer[i] = count; // 해당 원소의 위치에 가격이 떨어지지 않은 횟수 저장
+    }
+
+    // 결과 출력
+    for (int i = 0; i < prices_len; i++)
+    {
+        printf("%d ", answer[i]);
+    }
+
+    return answer;
+}
+
 int main(void)
 {
     int prices[100000] = {0}; // 주식 가격
     int prices_len = 0;       // 주식 가격의 길이
-    int count = 0;            // 주식 가격이 떨어지지 않는 시간을 count
     int answer[100000] = {0}; // 결과 배열
-    int flag=0;
 
     // 주식 가격의 길이 입력
     printf("주식 가격의 길이를 입력 >> ");
@@ -56,35 +99,6 @@ int main(void)
         scanf("%d", &prices[i]);
     }
 
-    // 주식 가격 크기 비교
-    for (int i = 0; i < prices_len - 1; i++) // 현재 원소의 크기와
-    {
-        count = 0;
-        for (int j = i + 1; j < prices_len; j++) // 다음 원소의 크기 비교
-        {
-            if (prices[i] <= prices[j]) // 현재 원소의 크기가 다음 원소의 크기보다 작거나 같으면
-            {
-                count++; // 가격이 떨어지지 않아 숫자 count
-            }
-            else{
-                flag++; // 가격이 떨어지는 경우 flag 설정
-                count++; // 가격이 떨어져도 시간은 지났기 때문에 count
-            }
-        }
-
-        if(flag>=2){ // 가격이 이전에 떨어졌던 상태인 경우
-            for(int k=0;k<flag-1;k++){
-                count--; // 이전에 떨어졌던 만큼 시간 counting 빼주기
-            }
-            flag=0; // flag 다시 0으로 설정
-        }
-        answer[i] = count; // 해당 원소의 위치에 가격이 떨어지지 않은 횟수 저장
-    }
-
-    // 결과 출력
-    for (int i = 0; i < prices_len; i++)
-    {
-        printf("%d ", answer[i]);
-    }
+    solution(prices, prices_len);
     return 0;
 }
