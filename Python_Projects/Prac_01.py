@@ -29,30 +29,35 @@
                    주석 처리 -> 보완 필요
                    Test 7 오류 -> 보완 필요
                    효율성 테스트 0점 -> 보완 필요
+' 2021-03-03-Wed : 필요 없는 변수 제거
+                   주석 처리
+                   사용자 정의함수 solution 생성
 =======================================================================================================================================
 '''
 
-prices = [1, 2, 3, 2, 3]  # 주식 가격
-answer = []  # 결과 배열
 
-temp = prices[:] # j for문에서 사용할 배열
-del temp[0] # j는 i보다 다음 원소를 가리켜야하므로 리스트의 0번째 원소 삭제
-for i in prices: # i = 주식 가격
+def solution(prices):
+    answer = []  # 결과 배열
 
-    if prices.index(i) == len(prices): # i의 index 번호가 prices 배열의 길이와 같으면
-        answer.insert(i, 0) # 해당 index의 값을 0으로 바꾸고
-        break # for문 나감
+    for i in range(len(prices)):  # answer 리스트 0으로 prices의 길이와 동일한 길이만큼 채워주기
+        answer.insert(i, 0)
 
-    count = 0
-    for j in temp:
-        if i <= j: # i가 j 보다 작거나 같으면 가격이 떨어지지 않았기 때문에
-            count += 1 # count 증가
+    for i in range(len(prices)):  # i = 주식 가격
 
-        else:
-            count += 1
-            break
-    if(len(temp)):
-        del temp[0]
-    answer.append(count)
+        if i == len(prices):  # i의 index 번호가 prices 배열의 길이와 같으면
+            answer.insert(i, 0)  # 해당 index의 값을 0으로 바꾸고
+            break  # for문 나감
 
-print(answer)
+        for j in range(i+1, len(prices)):
+            if prices[i] <= prices[j]:  # i번째 원소가 j번째 원소 보다 작거나 같으면 가격이 떨어지지 않았기 때문에
+                answer[i] += 1
+
+            else:
+                answer[i] += 1
+                break
+
+    return(answer)
+
+
+prices = input('주식 가격을 입력하세요 >> ').split()
+print(solution(prices))
