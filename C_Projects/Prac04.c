@@ -38,15 +38,19 @@
 =======================================================================================================================================
 + 수정 기록 +
 =======================================================================================================================================
-' 2021-03-04 : 코딩 시작
-' 2021-03-05 : 모두 지우고 재시작
-               temp 배열 성공
-               103번줄 for문 flag 씀으로서 제대로 동작하는지 확인 필요
-' 2021-03-06 : flag 필요 없어 삭제
-               temp 배열과 skill 배열 비교해 answer 값 증가시키는 코드 완료
-               주석 완료
-               TEST CASE 통과 X 문제
-               skill_trees 출력시 입력 값 외에 이상한 문자 출력됨 -> 수정 필요
+' 2021-03-04-THU : 코딩 시작
+' 2021-03-05-FRI : 모두 지우고 재시작
+                   temp 배열 성공
+                   103번줄 for문 flag 씀으로서 제대로 동작하는지 확인 필요
+' 2021-03-06-SAT : flag 필요 없어 삭제
+                   temp 배열과 skill 배열 비교해 answer 값 증가시키는 코드 완료
+                   주석 완료
+                   TEST CASE 통과 X 문제
+                   skill_trees 출력시 입력 값 외에 이상한 문자 출력됨 -> 수정 필요
+' 2021-03-07-SUN : TEST CASE 7개 중 3개 통과
+                   빨간줄 많이 뜨는 오류 -> 보완 필요
+                   빨간 줄 많이 뜨는 오류 해결
+                   TEST 시 10초를 넘겨 실패
 =======================================================================================================================================
 */
 
@@ -56,93 +60,130 @@
 
 // 파라미터로 주어지는 문자열은 const로 주어집니다. 변경하려면 문자열을 복사해서 사용하세요.
 // skill_trees_len은 배열 skill_trees의 길이입니다.
-//int solution(const char *skill, const char *skill_trees[], size_t skill_trees_len)
-int main(void)
-{
-  int answer = 0;
-  char temp[20][26] = {0};                                    // skill_trees 배열에 있는 원소 중 skill 배열에 포함되어 있는 원소만 빈칸없이 저장한 배열
-  char skill[3] = {"CBD"};                                    // 삭제
-  char skill_trees[4][5] = {"BACDE", "CBADF", "AECB", "BDA"}; // 삭제
-  int skill_trees_len = 0;                                    // 삭제
-  skill_trees_len = sizeof(skill_trees);                      // 삭제
-  int count = 0; // temp의 각 행의 원소들과 skill의 원소와 같은 개수 저장할 변수
-  int flag = 0; // temp 배열과 skill 배열을 비교할 때 skill 배열의 index를 저장할 변수
-  int size = 0; // temp 배열에서 skill_trees 배열에 있는 원소 중 skill 배열에 포함되어 있는 원소만 빈칸없이 저장했을 때 스킬이 들어있는 원소 개수
+int main(void) {
 
-  // temp 배열값 모두 Null로 설정
-  for (int i = 0; i < sizeof(temp) / sizeof(temp[i]); i++)
-  {
-    for (int j = 0; j < sizeof(temp[i]); j++)
-    {
-      temp[i][j] = '\0';
-    }
-  }
+	int answer = 0;
+	char temp[20][60] = { 0 }; // skill_trees 배열에 있는 원소 중 skill 배열에 포함되어 있는 원소만 빈칸없이 저장한 배열
+	char skill[3] = { "CBD" }; // 삭제
+	char skill_trees[4][5] = { "BACDE","CBADF","AECB", "BDA" }; // 삭제
+	int skill_trees_len = 0; // 삭제
+	skill_trees_len = sizeof(skill_trees); // 삭제
+	int count = 0; // temp의 각 행의 원소들과 skill의 원소와 같은 개수 저장할 변수
+	int flag = 0; // temp 배열과 skill 배열을 비교할 때 skill 배열의 index를 저장할 변수
+	int size = 0; // temp 배열에서 skill_trees 배열에 있는 원소 중 skill 배열에 포함되어 있는 원소만 빈칸없이 저장했을 때 스킬이 들어있는 원소 개수
+	int cnt = 0;
+	int flag1 = 0;
+	int count2 = 0;
+	int flag2 = 0;
 
-  // temp 배열 생성
-  for (int i = 0; i < skill_trees_len / sizeof(skill_trees[i]); i++)
-  { // skill_trees에 포함되어있는 스킬 중에서
-    for (int j = 0; j < sizeof(skill_trees[i]); j++)
-    { // skill_trees[i][j]로 모든 스킬 확인
-      for (int k = 0; k < sizeof(skill); k++)
-      { // skill로 정해져있는 배열
-        if (skill_trees[i][j] == skill[k])
-        {                                 // 만약 skill_trees에 skill에 포함되어있는 스킬이 있다면
-          temp[i][j] = skill_trees[i][j]; // temp 배열에 복사
-        }
+	// temp 배열값 모두 Null로 설정
+	for (int i = 0; i < sizeof(temp) / sizeof(temp[i]); i++) {
+		for (int j = 0; j < sizeof(temp[i]); j++) {
+			temp[i][j] = '\0';
+		}
+	}
 
-        for (int l = 0; l < sizeof(temp) / sizeof(temp[i]); l++)
-        { // temp 배열 전체를 검사
-          if (temp[i][l] == '\0')
-          {                              // temp 배열에 Null인 원소가 있다면
-            temp[i][l] = temp[i][l + 1]; // 다음 원소의 값을 현재 원소에 복사하고
-            temp[i][l + 1] = '\0';       // 다음 원소의 값을 Null 값으로 바꿔줌
-          }
-        }
-      }
-    }
-  }
+	// temp 배열 생성
+	for (int i = 0; i < skill_trees_len; i++) { // skill_trees에 포함되어있는 스킬 중에서
+		count = 0; // skill_trees와 skill의 원소가 같지 않은데 skill_tress의 원소가 영어 대문자 A에서 Z가 아닌 경우 count할 변수
+		cnt = 0; // skill_trees와 skill의 원소가 같은지 검사하는 횟수
+		count2 = 0;
+		count2 = 0;
+		for (int j = 0; j < sizeof(skill_trees[i]); j++) { // skill_trees[i][j]로 모든 스킬 확인
+			if (skill_trees[i][j] == '\0') { // skil_trees[i][j]의 값이 Null이라면
+				break; // skill_trees의 다음 행 검사
+			}
+			flag = 0; // skill_trees와 skill의 원소가 같으면 flag=1로 변경
+			flag1 = 0; // skill의 index를 설정할 변수
+			for (int k = 0; i < sizeof(skill); k++) { // skill로 정해져있는 배열에서
+				if (skill[k] == '\0') { // skill[i]의 값이 Null이라면
+					break; // skill_trees의 다음 열 검사
+				}
+				cnt++;// skill_trees와 skill의 원소가 같은지 검사한 횟수 증가
+				if (skill_trees[i][j] == skill[k]) { // 만약 skill_trees에 skill에 포함되어있는 스킬이 있다면
+					temp[i][j] = skill_trees[i][j]; // temp 배열에 복사
+					count2++; // temp 배열에 복사한 횟수 저장
+					flag = 1; // skill_trees와 skill의 원소가 같으면 flag=1로 변경
+					flag1 = k + 1; // skill의 index를 다음 원소 위치를 가리키도록 변경
+				}
+				else { // 만약 skill_trees와 skill의 원소가 같지 않으면
+					if (skill_trees[i][j] >= 'A' || skill_trees[i][j] <= 'Z') { // skill_tress의 원소가 영어 대문자 A에서 Z가 아니라면
+						count++; // 횟수 count
+						flag1++; // k의 index 1 증가
+					}
+				}
 
-  // temp 배열의 스킬 순서가 skill 배열의 스킬 순서와 같은지 확인해 answer값 증가
-  for (int i = 0; i < sizeof(temp) / sizeof(temp[i]); i++) // i : temp 배열의 행 temp[i][]
-  {
-    count = 0; // temp 배열의 행이 바뀔 때마다 0으로 설정
-    flag = 0; // temp 배열의 행이 바뀔 때마다 0으로 설정
-    size = 0; // temp 배열의 행이 바뀔 때마다 0으로 설정
+				if (flag == 1) { // skill_trees와 skill의 원소가 같았던 경우
+					break; // skill_trees의 다음 열 검사
+				}
+			}
+		}
 
-    // temp 배열의 각 행마다 스킬의 개수 확인
-    for (int j = 0; j < sizeof(temp[i]); j++) // j : temp 배열의 열 temp[i][j]
-    {
-      if (temp[i][j] != '\0') // temp 배열에 Null 값이 아닌 값이 들어있다면
-      {
-        size++; // size count
-      }
-    }
+		// temp배열에서 공백을 없애는 코드
+		while (1) {
+			for (int j = 0; j < count2; j++) { // temp 배열 전체를 검사
+				if (temp[i][j] < 'A' || temp[i][j]>'Z') { // temp[i][j]가 영어 대문자가 아니면
+					temp[i][j] = '\0'; // Null로 변경
+				}
 
-    if (temp[i][0] != skill[0]) // temp 배열의 첫 스킬이 skill 배열의 첫 스킬과 다르면
-    {
-      continue; // temp 배열의 다음 행 검사
-    }
+				if (temp[i][j] == '\0') { // temp 배열에 Null인 원소가 있다면
+					temp[i][j] = temp[i][j + 1]; // 다음 원소의 값을 현재 원소에 복사하고
+					temp[i][j + 1] = '\0'; // 다음 원소의 값을 Null 값으로 바꿔줌
+				}
+			}
+			
+			for (int j = 0; j < count2; j++) {
+				if (temp[i][j] != '\0') {
+					flag2 = 1;
+				}
+			}
 
-    for (int j = 0; j < sizeof(temp[i]); j++) // j : temp 배열의 열 temp[i][j]
-    {
-      for (int k = flag; k < sizeof(skill); k++) // k : skill 배열의 index skill[i]
-      {
-        if (temp[i][j] == skill[k])
-        {          // temp의 각 행의 원소들과 skill의 원소와 비교해 같으면
-          count++; // 숫자 count
-          flag = k + 1; // k의 다음 index를 현 index+1로 설정
-          continue; // temp 배열의 다음 열 검사
-        }
-      }
-    }
+			if (flag2 == 1) {
+				break;
+			}
+		}
 
-    if (count == size)
-    {           // 같은 원소의 개수와 temp 배열 index 개수와 같으면
-      answer++; // answer 값 증가
-    }
-  }
+		if (count == cnt) {
+			answer++;
+		}
 
-  //return answer;
-  printf("answer = %d\n", answer);
-  return 0;
+		if (flag2 == 1) {
+			break;
+		}
+	}
+
+	// temp 배열의 스킬 순서가 skill 배열의 스킬 순서와 같은지 확인해 answer값 증가
+	for (int i = 0; i < sizeof(temp) / sizeof(temp[i]); i++) { // i : temp 배열의 행 temp[i][]
+		count = 0; // temp 배열의 행이 바뀔 때마다 0으로 설정
+		flag = 0; // temp 배열의 행이 바뀔 때마다 0으로 설정
+		size = 0; // temp 배열의 행이 바뀔 때마다 0으로 설정
+
+		// temp 배열의 각 행마다 스킬의 개수 확인
+		for (int j = 0; j < sizeof(temp[i]); j++) { // j : temp 배열의 열 temp[i][j]
+			if (temp[i][j] != '\0') { // temp 배열에 Null 값이 아닌 값이 들어있다면
+				size++; // size count
+			}
+		}
+
+		if (temp[i][0] != skill[0]) { // temp 배열의 첫 스킬이 skill 배열의 첫 스킬과 다르면
+			continue; // temp 배열의 다음 행 검사
+		}
+
+		for (int j = 0; j < sizeof(temp[i]); j++) { // j : temp 배열의 열 temp[i][j]
+			for (int k = flag; k < sizeof(skill); k++) { // k : skill 배열의 index skill[i]
+				if (temp[i][j] == skill[k]) { // temp의 각 행의 원소들과 skill의 원소와 비교해 같으면
+					count++; // 숫자 count
+					flag = k + 1; // k의 다음 index를 현 index+1로 설정
+					continue; // temp 배열의 다음 열 검사
+				}
+			}
+		}
+
+		if (count == size) { // 같은 원소의 개수와 temp 배열 index 개수와 같으면
+			answer++; // answer 값 증가
+		}
+	}
+
+	printf("answer = %d\n", answer);
+	return 0;
 }
