@@ -30,6 +30,11 @@
 =======================================================================================================================================
 ' 2021-03-13-Sat : 코딩 시작
                    number 배열의 자리가 변하지 않도록 다시 코딩해야함
+                   가능한 숫자의 유형 모두 구하는 for문 재코딩 필요
+' 2021-03-14-Sun : 코딩 처음부터 다시 시작
+                   number 배열 숫자로 바꾸기 성공
+                   숫자를 한 글자씩 split 배열에 저장
+                   split 배열 순서 원위치
 =======================================================================================================================================
 */
 
@@ -41,146 +46,51 @@
 char *solution(const char *number, int k)
 {
     // return 값은 malloc 등 동적 할당을 사용해주세요. 할당 길이는 상황에 맞게 변경해주세요.
-    char *answer = (char *)malloc(1);
-    char temp[7] = {0};
-    char tmp = 0;
+    char *answer = (char *)malloc(sizeof(int) * (sizeof(number) - k));
     int num = 0;
-    int sum = 0;
-    int split[7] = {0};
-    int max=0;
-    int max_idx = 0;
-    int a = 0;
-    int b = 0;
+    int split[4]={0};
+    int temp = 0;
     int i = 0;
+    int new_temp[2]={0};
 
-    // temp 배열에 number 배열 복사
-    for (int i = 0; i < sizeof(number); i++)
-    {
-        temp[i] = number[i];
-    }
+    // number 배열로 int형으로 변환
+    num = atoi(number);
 
-    // temp 배열 오름차순 정렬
-    /*
-    for(int i=0;i<sizeof(temp)-1;i++){
-        for(int j=i+1;j<sizeof(temp);j++){
-            if(temp[i]>temp[j]){ // temp의 왼쪽 원소가 오른쪽 원소보다 큰 경우 자리 바꿈
-                tmp = temp[i];
-                temp[i]=temp[j];
-                temp[j]=tmp;
-            }
-        }
-    }
-    */
-    /*
-    // temp 배열에서 k 개수만큼 앞에서 부터 삭제
-    for(int i=0;i<k;i++){
-        for(int j=0;j<sizeof(temp)-1;j++){
-            temp[j]=temp[j+1];
-        }
-        temp[sizeof(temp)-i-1]='\0';
-    }*/
-
-    num = atoi(temp); // char 형 temp배열의 숫자형 문자를 숫자로 변환해 num에 저장
-    a = num;
-    i = 0;
-    // num의 각 자리수를 split 배열에 저장 (int형)
+    // num을 숫자 하나씩 배열에 저장 (거꾸로)
     while (1)
     {
-        split[i] = a % 10;
-        a /= 10;
-        if (a < 10)
+        split[i] = num % 10;
+        num /= 10;
+        i++;
+        if (num < 10)
         {
-            split[i + 1] = a;
+            split[i] = num;
             break;
         }
-        i++;
     }
 
-    // split 배열 원소 위치 원위치
-    tmp=0;
+    // split 배열 순서 원위치
     for(int i=0;i<sizeof(split)/8;i++){
-        tmp=split[i];
+        temp=split[i];
         split[i]=split[sizeof(split)/4-i-1];
-        split[sizeof(split)/4-i-1]=tmp;
+        split[sizeof(split)/4-i-1]=temp;
     }
 
-    for(int i=0;i<sizeof(split)/4;i++){
+    // split 출력
+    for (int i = 0; i < sizeof(split) / 4; i++)
+    {
         printf("split[%d] = %d\n", i, split[i]);
     }
 
-    // 가능 한 숫자의 유형 모두 출력
-    for(int i=0;i<sizeof(number)-k;i++){
-        for(int j=0;j<sizeof(split)/4-k;j++){
-            
-            for(int l=j;l<sizeof(split)/4;l++){
-                sum=0;
-                for(int z=0;z<sizeof(split)/4-k-l-1;z++){
-                    split[l]=split[l]*10;
-                }
-                sum=sum+split[l];
-            }
-            printf("sum : \n%d\n", sum);
-        }
-    }
-    // split 배열에서 가장 큰 수 찾기
-    /*
-    max = split[0];
-    for (int i = 0; i < sizeof(split) / 4 - k; i++)
-    {
-        printf("hi\n");
-        if (max < split[i])
-        {
-            max = split[i];
-            max_idx = i;
-            printf("max = %d\nmax_idx = %d\n", split[i], max_idx);
-        }
-    }
-    printf("max = %d\n", max);
-    */
-    /*
-    if (sizeof(split) / 4 - max_idx - 1 == k)
-    { // split배열에서 가장 큰 수부터 끝까지의 원소 개수가 k와 같으면
-        for (int i = max_idx; i < sizeof(split); i++)
-        {
-            num = num + split[i] * 10 * (k - i - 1);
-            if (i == k - 1)
-            {
-                num += split[i];
-                break;
-            }
-        }
-    }
-    */
-    // split 배열 내림차순
-    /*
-    for(int i=0;i<sizeof(split)/4-1;i++){
-        for(int j=i;j<sizeof(split)/4;j++){
-            if(split[i]<split[j]){
-                tmp=split[i];
-                split[i]=split[j];
-                split[j]=tmp;
-            }
-        }
-    }
-    */
-
-    // split 배열에서 가장 큰 수 부터 k개 만큼의 수로 숫자 만들기
-    num = 0;
-    for (int i = 0; i < k; i++)
-    {
-        num = num + split[i] * 10 * (k - i - 1);
-        if (i == k - 1)
-        {
-            num += split[i];
-            break;
-        }
+    // 배열의 수를 sizeof(split)/4-k 자리수로 만들어 새로운 배열에 저장
+    while(1){
+        
     }
 
-    itoa(num, answer, 10); // itoa(int 변수, 저장할 변수, 진수)
     return answer;
 }
 
 int main(void)
 {
-    printf("%s\n", solution("1231234", 3));
+    printf("%s\n", solution("1249", 2));
 }
