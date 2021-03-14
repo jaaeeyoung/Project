@@ -40,7 +40,6 @@ int solution(int n) {
     int third[100]={0};
     int i=0;
     int count=0;
-    int sum=0;
 
     // n을 3진법으로 변환
     while(1){
