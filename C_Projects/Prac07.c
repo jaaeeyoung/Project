@@ -18,9 +18,19 @@
 =======================================================================================================================================
 + 입출력 예 +
 =======================================================================================================================================
-' a = 1, b = 31, result = "SUN"
-' a = 2, b = 29, result = "MON"
-' a = 5, b = 24, result = "TUE"
+' a = 1, b = 31, result = "SUN" O 0
+' a = 2, b = 29, result = "MON" O 0
+' a = 3, b = 31, result = "THU"   0
+' a = 4, b = 30, result = "SAT" O 0
+' a = 5, b = 24, result = "TUE" O 
+' a = 5, b = 31, result = "TUE"   0
+' a = 6, b = 30, result = "THU"   0
+' a = 7, b = 31, result = "SUN" O 0
+' a = 8, b = 31, result = "WED" O
+' a = 9, b = 30, result = "FRI" O 0
+' a = 10, b = 31, result = "MON" O 0
+' a = 11, b = 30, result = "WED" O 0
+' a = 12, b = 31, result = "SAT" O 0
 =======================================================================================================================================
 + 입출력 예 설명 +
 =======================================================================================================================================
@@ -33,6 +43,7 @@
                    a월 b일까지의 요일 계산
                    5월 24일 정답
                    Test Case 9, 13 오답 -> 보완 필요
+' 2021-03-16-Tue : 마지막 count%7의 값이 0인 경우 count-1의 값이 존재하지 않아 이를 7로 설정
 =======================================================================================================================================
 */
 
@@ -63,20 +74,12 @@ char *solution(int a, int b)
                 count++;
             }
             count %= 7;
-            if (i == 1)
-            {
-                printf("count=%d\n", count);
-            }
         }
         else if (i == 2)
         {
             for (int j = 1; j <= 29; j++)
             {
                 count++;
-                if (j == 1)
-                {
-                    printf("count=%d\n", count);
-                }
             }
             count %= 7;
         }
@@ -94,10 +97,12 @@ char *solution(int a, int b)
     for (int i = 1; i <= b; i++)
     {
         count++;
-        printf("count = %d\n", count);
     }
     count %= 7;
 
+    if(count==0){ // count가 0인 경우 count-1의 index가 존재하지 않기 때문에
+        count=7; // count를 7로 설정
+    }
     answer[0] = day[count - 1][0];
     answer[1] = day[count - 1][1];
     answer[2] = day[count - 1][2];
@@ -107,5 +112,16 @@ char *solution(int a, int b)
 
 int main(void)
 {
-    printf("answer = %s", solution(5, 24));
+    printf("1. answer = %s\n", solution(1, 31));
+    printf("2. answer = %s\n", solution(2, 29));
+    printf("3. answer = %s\n", solution(3, 31));
+    printf("4. answer = %s\n", solution(4, 30));
+    printf("5. answer = %s\n", solution(5, 31));
+    printf("6. answer = %s\n", solution(6, 30));
+    printf("7. answer = %s\n", solution(7, 31));
+    printf("8. answer = %s\n", solution(8, 31));
+    printf("9. answer = %s\n", solution(9, 30));
+    printf("10. answer = %s\n", solution(10, 31));
+    printf("11. answer = %s\n", solution(11, 30));
+    printf("12. answer = %s\n", solution(12, 31));
 }
