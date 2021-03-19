@@ -30,11 +30,14 @@
 def solution(n):
     answer = [0] * (3)
     answer[1]=1
+    if(n<2):
+        return n
     if(n>1):
-        for i in range(n):
+        for i in range(1, n):
             answer[2] = answer[0]+answer[1]
             answer[0], answer[1] = answer[1], answer[2]
-    return answer[n]
+
+    return answer[2]
 
 for n in range(11):
     print(solution(n))
