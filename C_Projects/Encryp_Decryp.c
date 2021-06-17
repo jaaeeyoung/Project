@@ -13,6 +13,7 @@
 ' 2021-06-17-THU : 코딩 시작
                    파일 입출력 구현
                    파일의 내용 추출 구현
+                   유니코드 실패
 =======================================================================================================================================
 + 참고 +
 =======================================================================================================================================
@@ -20,6 +21,8 @@
   https://m.blog.naver.com/vjhh0712v/221498090408
 ' C언어 유니코드 사용법 :
   https://insalat.tistory.com/1
+' C언어 유니코드 사용법 (더 보기 좋음) :
+  https://nomad-programmer.tistory.com/346
 =======================================================================================================================================
 */
 
@@ -27,8 +30,6 @@
 #include <stdio.h>
 #include <memory.h>
 #include <string.h>
-#include <wchar.h>
-#include <locale.h>
 
 int main(void)
 {
@@ -41,8 +42,8 @@ int main(void)
 
     FILE *fp;
     char file_buff[100];
-    //char *plain_text=malloc(sizeof(file_buff)*10);
-    wchar_t *plain_text=Lmalloc(sizeof(file_buff)*10);
+    char *plain_text=malloc(sizeof(file_buff)*10);
+    //wchar_t *plain_text=Lmalloc(sizeof(file_buff)*10);
     char temp;
 
 
@@ -90,8 +91,7 @@ int main(void)
     : 정상적으로 파일을 닫는 경우 0 반환, 실패한 경우 -1 반환
     */
 
-    //printf("\n1\nplain_text :\n%s\n", plain_text);
-    wprintf(L"\n1\nplain_text :\n%s\n", plain_text);
+    printf("\n1\nplain_text :\n%s\n", plain_text);
     //printf("%c%c%c%c%c%c%c", plain_text[0], plain_text[1], plain_text[2], plain_text[3], plain_text[4], plain_text[5], plain_text[6]);
 
     for (int i = 0; i < strlen(plain_text) / 2; i++)
@@ -102,6 +102,6 @@ int main(void)
     }
 
     wprintf(L"\n1\nplain_text :\n%s\n", plain_text);
-    
+
     return 0;
 }
